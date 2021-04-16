@@ -1,9 +1,11 @@
 const express =require("express");
+const cors=require('cors');
 const bodyParser =require("body-parser");
 const mongoose =require("mongoose");
 const shotid =require("shortid");
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 mongoose.connect("mongodb://localhost/shopping-cart-db", {
     useNewUrlParser: true,

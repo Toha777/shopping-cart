@@ -1,11 +1,20 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import formatCurrency from "./utils";
 import Fade from "react-reveal/Fade";
 import Modal from "react-modal";
 import Zoom from "react-reveal/Zoom";
+import { useSelector,useDispatch } from 'react-redux';
+import { fetchProducts } from '../actions/productActions';
+
 
 export default function Products(props) {
-    const { products,addToCart } = props;
+    const { addToCart } = props;
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(fetchProducts())
+      }, [dispatch]);
+    const products = useSelector(state => state.products.products);
+    console.log(products);
     const [product, setProduct] = useState(null);
     const openModal = product =>{
         setProduct( product );
