@@ -13,8 +13,7 @@ export default function Products(props) {
     useEffect(() => {
         dispatch(fetchProducts())
       }, [dispatch]);
-    const products = useSelector(state => state.products.products);
-    console.log(products);
+    const products = useSelector(state => state.products.filteredItems);
     const [product, setProduct] = useState(null);
     const openModal = product =>{
         setProduct( product );
