@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
 import formatCurrency from './utils';
 import Fade from "react-reveal/Fade";
+import { useDispatch, useSelector } from 'react-redux';
+import { removeFromCart } from '../actions/cartAction';
 
 export default function Cart(props) {
-    const { cartItems } = props;
+    const cartItems = useSelector(state => state.cart.cartItems);
+    const dispatch = useDispatch();
     const [state,setState] = useState({
         name: "",
         email: "",
@@ -40,7 +43,7 @@ export default function Cart(props) {
                             <div>{item.title}</div>
                             <div className="right">
                                 {formatCurrency(item.price)} x {item.count} {" "}
-                                <button className="button" onClick={() => props.removeFromCart(item)}>
+                                <button className="button" onClick={() => dispatch(removeFromCart(item))}>
                                     Remove
                             </button>
                             </div>
