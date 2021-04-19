@@ -5,10 +5,11 @@ import Modal from "react-modal";
 import Zoom from "react-reveal/Zoom";
 import { useSelector,useDispatch } from 'react-redux';
 import { fetchProducts } from '../actions/productActions';
+import { addToCart } from '../actions/cartAction';
 
 
 export default function Products(props) {
-    const { addToCart } = props;
+    
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(fetchProducts())
@@ -36,7 +37,7 @@ export default function Products(props) {
                             </a>
                             <div className="product-price">
                                 <div>{formatCurrency(product.price)}</div>
-                                <button onClick={()=>addToCart(product)} className="button primary">Add To Cart</button>
+                                <button onClick={()=>dispatch(addToCart(product))} className="button primary">Add To Cart</button>
                             </div>
                         </div>
                     </li>
