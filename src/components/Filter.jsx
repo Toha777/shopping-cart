@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { sortProducts, filterProducts } from '../actions/productActions';
 
 export default function Filter(props) {
-     const dispatch = useDispatch();
      var size = useSelector( state => state.products.size );
      var sort = useSelector( state => state.products.sort );
      const items = useSelector( state => state.products.items );
      const filteredItems  = useSelector( state => state.products.filteredItems );
      const count = filteredItems.length;
+     const dispatch = useDispatch();
      const sortItems = sort => dispatch(sortProducts(filteredItems,sort));
      const filterItems = size => dispatch(filterProducts(items,size));
      
