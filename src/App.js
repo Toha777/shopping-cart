@@ -6,6 +6,7 @@ import Filter from "./components/Filter";
 import Products from "./components/Products";
 import { store } from "./store";
 
+
 function App() {
   const [state,setState] = useState({
     cartItems: localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : [],
