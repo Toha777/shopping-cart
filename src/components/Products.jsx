@@ -45,10 +45,9 @@ export default function Products(props) {
                 )}
             </ul>
             </Fade>
-            {
-                product && (
+            {product && (
                     <Modal isOpen={true}
-                    onRequestClose={closeModal}>
+                     onRequestClose={closeModal}>
                         <Zoom>
                             <button className="close-modal" onClick={closeModal} >
                                 x
@@ -72,7 +71,7 @@ export default function Products(props) {
                                     <div className="product-price">
                                         <div>{formatCurrency(product.price)}</div>
                                         <button className="button primary" onClick={()=>{
-                                            addToCart(product);
+                                            dispatch(addToCart(product));
                                             closeModal();
                                         }}>
                                             Add To Cart

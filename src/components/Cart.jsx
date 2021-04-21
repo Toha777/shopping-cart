@@ -1,11 +1,15 @@
 import React, {useState} from 'react';
 import formatCurrency from './utils';
 import Fade from "react-reveal/Fade";
+import Modal from "react-modal";
+import Zoom from "react-reveal";
 import { useDispatch, useSelector } from 'react-redux';
 import { removeFromCart } from '../actions/cartAction';
+import { clearOrder, createOrder } from '../actions/orderActions';
 
 export default function Cart(props) {
     const cartItems = useSelector(state => state.cart.cartItems);
+    const order = useSelector(state => state.order.order);
     const dispatch = useDispatch();
     const [state,setState] = useState({
         name: "",
@@ -16,22 +20,70 @@ export default function Cart(props) {
     const handleInput = e => {
         setState({...state, [e.target.name]: e.target.value})
     };
-    const createOrder = e => {
+    const onCreateOrder = e => {
         e.preventDefault();
         const order = {
             name: state.name,
             email: state.email,
             address: state.address,
-            cartItems: cartItems
+            cartItems: cartItems,
+            total: cartItems.reduce((a,c) => a + c.price*c.count, 0)
         };
-        props.createOrder(order);
+        dispatch(createOrder(order));
     }
+    const closeModal = () => dispatch(clearOrder());
     return (
         <div>
             { (cartItems.length === 0) ?
                 (<div className="cart cart-header">Cart is empty</div>)
                 : (<div className="cart cart-header">You have {cartItems.length} in the cart{" "}
                    </div>)}
+            {order && 
+                <Modal
+                isOpen={true}
+                onRequestClose={closeModal}
+                >
+                    <Zoom>
+                        <button className="close-modal" onClick={closeModal}>x</button>
+                        <div className="order-details">
+                            <h3 className="success-massage">Your order has been placed.</h3>
+                            <h2>Order {order._id}</h2>
+                            <ul>
+                                <li>
+                                    <div>Name:</div>
+                                    <div>{order.name}</div>
+                                </li>
+                                          
+                                 <li>
+                                    <div>Email:</div>
+                                    <div>{order.email}</div>
+                                 </li>
+                                 <li>
+                                    <div>Address:</div>
+                                    <div>{order.address}</div>
+                                 </li>
+                                 <li>
+                                    <div>Date:</div>
+                                    <div>{order.createdAt}</div>
+                                 </li>
+                                  <li>
+                                    <div>Total:</div>
+                                    <div>{formatCurrency(order.total)}</div>
+                                 </li>
+                                 <li>
+                                    <div>Cart Items:</div>
+                                    <div>
+                                    {order.cartItems.map(x => (
+                                        <div>
+                                            {x.count}{" x "}{x.title}
+                                        </div>
+                                    ))}
+                                    </div>
+                                 </li>
+                            </ul>
+                        </div>
+                    </Zoom>
+                </Modal>}
             <div className="cart">
                 <Fade left cascade>
                 <ul className="cart-items">
@@ -68,7 +120,7 @@ export default function Cart(props) {
             {showCheckout && (
               <Fade right cascade>  
               <div className="cart">
-                  <form onSubmit={createOrder}>
+                  <form onSubmit={(onCreateOrder)}>
                       <ul className="form-container">
                           <li>
                               <label>Email</label>
